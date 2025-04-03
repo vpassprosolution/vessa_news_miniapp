@@ -21,23 +21,32 @@
       max-width: 600px;
     }
 
+    .title {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 20px 0 10px;
+    }
+
+    .news-box {
+      background-color: #1c1c1c;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 20px;
+      width: 90%;
+      max-width: 600px;
+      margin-bottom: 20px;
+    }
+
+    .news-item {
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+
     .iframe-wrapper {
       width: 100%;
       max-width: 600px;
       height: 600px;
-      margin-top: 20px;
       border: none;
-    }
-
-    .logo {
-      width: 120px;
-      margin: 20px 0 30px;
-    }
-
-    .title {
-      font-size: 22px;
-      font-weight: 600;
-      margin-top: 15px;
     }
 
     .back-button {
@@ -47,7 +56,12 @@
       padding: 12px 25px;
       border-radius: 25px;
       text-decoration: none;
-      margin-top: 20px;
+      margin: 25px 0 10px;
+    }
+
+    .logo {
+      width: 120px;
+      margin-bottom: 30px;
     }
   </style>
 </head>
@@ -56,6 +70,10 @@
   <img src="hero.png" class="hero" alt="Hero Image" />
 
   <div class="title">📊 Today's High-Impact News</div>
+
+  <div class="news-box" id="news-list">
+    🔄 Loading today's news...
+  </div>
 
   <iframe class="iframe-wrapper"
     src="https://sslecal2.investing.com?columns=exc_flags,exc_currency,exc_importance,exc_actual,exc_forecast,exc_previous&importance=3"
@@ -66,6 +84,32 @@
   <a class="back-button" href="https://t.me/vpasspro_bot">🔙 Back to Bot</a>
 
   <img src="logo.png" class="logo" alt="Logo" />
+
+  <script>
+    const newsBox = document.getElementById("news-list");
+
+    async function loadNews() {
+      try {
+        const res = await fetch("https://vessanewsbackend-production.up.railway.app/get_high_impact_news");
+        const data = await res.json();
+
+        if (data.status === "success" && data.data.length > 0) {
+          const list = data.data.map(item =>
+            `⏰ ${item.time} | ${item.currency} | 🔴 ${item.event}`
+          ).join("<br>");
+
+          newsBox.innerHTML = list;
+        } else {
+          newsBox.innerHTML = "✅ No high-impact news for today.";
+        }
+      } catch (e) {
+        console.error("❌ Error:", e);
+        newsBox.innerHTML = "⚠️ Failed to load news. Please try again later.";
+      }
+    }
+
+    loadNews();
+  </script>
 
 </body>
 </html>
