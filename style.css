@@ -1,0 +1,56 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0d0d0d;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+}
+
+.container {
+  padding: 20px;
+}
+
+.hero-image {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #f5f5f5;
+}
+
+.news-section {
+  margin-bottom: 30px;
+}
+
+.news-card {
+  background: #1a1a1a;
+  border: 1px solid #444;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.back-button {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: #ffbf00;
+  color: #000;
+  border-radius: 25px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.footer-logo {
+  width: 100px;
+  margin-top: 25px;
+  opacity: 0.8;
+}
