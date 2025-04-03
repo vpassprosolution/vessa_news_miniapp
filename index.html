@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VessaPro - News</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background-color: #0d0d0d;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    img.hero {
+      width: 100%;
+      max-width: 600px;
+      height: auto;
+      margin-top: 10px;
+    }
+
+    .news-container {
+      width: 90%;
+      max-width: 700px;
+      background: #1a1a1a;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+      box-shadow: 0 0 10px rgba(255,255,255,0.05);
+    }
+
+    .news-container h2 {
+      font-size: 24px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
+    }
+
+    .news-container ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .news-container li {
+      margin: 10px 0;
+      padding: 12px;
+      background: #262626;
+      border-left: 5px solid #e60000;
+      border-radius: 5px;
+    }
+
+    .back-button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      font-size: 16px;
+      background-color: #e60000;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    img.logo {
+      width: 150px;
+      margin: 30px 0 20px;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <img src="hero.png" alt="Vessa Hero" class="hero" />
+
+  <div class="news-container">
+    <h2>🔥 Today's High Impact News</h2>
+    <ul id="news-list">
+      <li>Loading news from Forex Factory...</li>
+    </ul>
+  </div>
+
+  <a class="back-button" href="https://t.me/vpasspro_bot">🔙 Back to Vessa Bot</a>
+  <img src="logo.png" alt="VessaPro Logo" class="logo" />
+
+  <script>
+    async function fetchRedFolderNews() {
+      try {
+        const response = await fetch("https://corsproxy.io/?https://www.forexfactory.com/");
+        const html = await response.text();
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+
+        const items = doc.querySelectorAll(".calendar__row");
+        const list = document.getElementById("news-list");
+        list.innerHTML = "";
+
+        let count = 0;
+
+        items.forEach(row => {
+          const impact = row.querySelector(".impact--high");
+          const time = row.querySelector(".calendar__time");
+          const currency = row.querySelector(".calendar__currency");
+          const event = row.querySelector(".calendar__event");
+
+          if (impact && time && currency && event) {
+            count++;
+            const li = document.createElement("li");
+            li.innerHTML = `🕒 ${time.textContent.trim()} — <b>${currency.textContent.trim()}</b> → ${event.textContent.trim()}`;
+            list.appendChild(li);
+          }
+        });
+
+        if (count === 0) {
+          list.innerHTML = "<li>✅ No high-impact news today.</li>";
+        }
+      } catch (error) {
+        document.getElementById("news-list").innerHTML = "<li>❌ Failed to load news.</li>";
+        console.error("News fetch error:", error);
+      }
+    }
+
+    fetchRedFolderNews();
+  </script>
+</body>
+</html>
