@@ -3,68 +3,69 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>VESSA News Highlights</title>
-  <link rel="stylesheet" href="style.css"/>
-</head>
-<body>
-  <div class="container">
-    <img src="hero.png" alt="Hero Image" class="hero-image"/>
-
-    <div class="title">📊 Today’s High-Impact News</div>
-
-    <div id="news" class="news-section">
-      <p>Loading news from Forex Factory...</p>
-    </div>
-
-    <a href="https://t.me/vpasspro_bot" class="back-button">⬅️ Back to VESSA BOT</a>
-
-    <img src="logo.png" alt="Logo" class="footer-logo"/>
-  </div>
-
-  <script>
-    async function fetchNews() {
-      const proxyUrl = "https://api.allorigins.win/get?url=";
-      const targetUrl = encodeURIComponent("https://www.forexfactory.com/calendar");
-
-      try {
-        const response = await fetch(proxyUrl + targetUrl);
-        const data = await response.json();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(data.contents, "text/html");
-
-        const newsRows = [...doc.querySelectorAll("#calendar__table .calendar__row")];
-        const today = new Date().toISOString().split("T")[0];
-
-        const redNews = newsRows.filter(row => {
-          const impact = row.querySelector(".calendar__impact .impact--high");
-          const dateAttr = row.getAttribute("data-event-timestamp");
-          return impact && dateAttr && new Date(parseInt(dateAttr) * 1000).toISOString().startsWith(today);
-        });
-
-        const newsSection = document.getElementById("news");
-        newsSection.innerHTML = "";
-
-        if (redNews.length === 0) {
-          newsSection.innerHTML = "<p>✅ No high-impact news today!</p>";
-        } else {
-          redNews.forEach(row => {
-            const time = row.querySelector(".calendar__time")?.textContent.trim() || "";
-            const currency = row.querySelector(".calendar__currency")?.textContent.trim() || "";
-            const event = row.querySelector(".calendar__event")?.textContent.trim() || "";
-
-            const card = document.createElement("div");
-            card.classList.add("news-card");
-            card.innerHTML = `<strong>${time}</strong> - <span>${currency}</span> <br>${event}`;
-            newsSection.appendChild(card);
-          });
-        }
-      } catch (error) {
-        document.getElementById("news").innerHTML = "<p>⚠️ Failed to load news. Please try again later.</p>";
-        console.error("Error fetching news:", error);
-      }
+  <title>VESSA PRO NEWS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Urbanist', sans-serif;
+      background-color: #0f0f0f;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    fetchNews();
-  </script>
+    .hero {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .iframe-wrapper {
+      width: 100%;
+      max-width: 600px;
+      height: 600px;
+      margin-top: 20px;
+      border: none;
+    }
+
+    .logo {
+      width: 120px;
+      margin: 20px 0 30px;
+    }
+
+    .title {
+      font-size: 22px;
+      font-weight: 600;
+      margin-top: 15px;
+    }
+
+    .back-button {
+      background-color: white;
+      color: black;
+      font-weight: bold;
+      padding: 12px 25px;
+      border-radius: 25px;
+      text-decoration: none;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <img src="hero.png" class="hero" alt="Hero Image" />
+
+  <div class="title">📊 Today's High-Impact News</div>
+
+  <iframe class="iframe-wrapper"
+    src="https://sslecal2.investing.com?columns=exc_flags,exc_currency,exc_importance,exc_actual,exc_forecast,exc_previous&importance=3"
+    frameborder="0"
+    scrolling="yes">
+  </iframe>
+
+  <a class="back-button" href="https://t.me/vpasspro_bot">🔙 Back to Bot</a>
+
+  <img src="logo.png" class="logo" alt="Logo" />
+
 </body>
 </html>
